@@ -10,15 +10,6 @@ on:
       - "test/**"
       - "windows/**"
       - "build/windows/**"
-    paths-ignore:
-      - "**.md"
-      - ".github/**"
-      - ".gitignore"
-      - "LICENSE"
-      - "android/**"
-      - "ios/**"
-      - "macos/**"
-      - "web/**"
 
   pull_request:
     branches:
