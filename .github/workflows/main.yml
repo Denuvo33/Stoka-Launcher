@@ -1,0 +1,49 @@
+name: Flutter Windows CI/CD
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "lib/**"
+      - "pubspec.yaml"
+      - "test/**"
+      - "windows/**"
+      - "build/windows/**"
+    paths-ignore:
+      - "**.md"
+      - ".github/**"
+      - ".gitignore"
+      - "LICENSE"
+      - "android/**"
+      - "ios/**"
+      - "macos/**"
+      - "web/**"
+
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build_and_test_windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.29.3"
+          channel: "stable"
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      # - name: Run Flutter tests
+      #   run: flutter test
+
+      - name: Enable Windows desktop support
+        run: flutter config --enable-windows-desktop
+
+      - name: Build Flutter Windows executable
+        run: flutter build windows --release
