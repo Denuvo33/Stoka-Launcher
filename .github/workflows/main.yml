@@ -30,6 +30,11 @@ jobs:
       - name: Get Flutter dependencies
         run: flutter pub get
 
+      - name: Create .env file
+        run: |
+          echo "STEAM_API=${{ secrets.API_KEY }}" >> .env
+        shell: powershell
+
       # - name: Run Flutter tests
       #   run: flutter test
 
