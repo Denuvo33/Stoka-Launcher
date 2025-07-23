@@ -55,9 +55,8 @@ jobs:
           echo "zip_file=$outputZipFile" >> $GITHUB_OUTPUT # Set output path file ZIP
         shell: powershell
 
-      - name: Push to Releases (ncipollo/release-action)
+      - name: Push to Releases
         uses: ncipollo/release-action@v1
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && success()
         with:
           artifacts: ${{ steps.zip_build.outputs.zip_file }}
           tag: v7.0.${{ github.run_number }}
