@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
       theme: ThemeData.dark(),
-      title: 'Game Launher',
+      title: 'Stoka Launcher',
       home: HomeScreen(),
     );
   }
