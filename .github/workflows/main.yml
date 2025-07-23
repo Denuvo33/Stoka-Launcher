@@ -54,10 +54,10 @@ jobs:
           Compress-Archive -Path "build/windows/x64/runner/Release/*" -DestinationPath $outputZipFile
           echo "zip_file=$outputZipFile" >> $GITHUB_OUTPUT # Set output path file ZIP
         shell: powershell
-        
+
       - name: Push to Releases (ncipollo/release-action)
         uses: ncipollo/release-action@v1
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && success()
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && success()
         with:
           artifacts: ${{ steps.zip_build.outputs.zip_file }}
           tag: v7.0.${{ github.run_number }}
