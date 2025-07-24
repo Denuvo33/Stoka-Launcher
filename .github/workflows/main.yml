@@ -16,12 +16,10 @@ on:
       - master
 
 jobs:
-  build_and_test_windows:
+  build_test_and_release_windows:
     runs-on: windows-latest
     permissions:
       contents: write
-    outputs:
-      zip_path: ${{ steps.zip_build.outputs.zip_file }}
 
     steps:
       - uses: actions/checkout@v4
@@ -39,9 +37,6 @@ jobs:
           echo "STEAM_API=${{ secrets.API_KEY }}" >> .env
         shell: powershell
 
-      # - name: Run Flutter tests
-      #   run: flutter test
-
       - name: Enable Windows desktop support
         run: flutter config --enable-windows-desktop
 
@@ -51,13 +46,17 @@ jobs:
       - name: Zip Windows build for release
         id: zip_build
         run: |
-          $outputZipFile = "flutter_windows_app.zip"
-          # Kompres seluruh isi folder Release ke dalam file ZIP
-          Compress-Archive -Path "build/windows/x64/runner/Release/*" -DestinationPath $outputZipFile
-          echo "zip_file=$outputZipFile" >> $GITHUB_OUTPUT # Set output path file ZIP
+          $buildFolderPath = "build/windows/x64/runner/Release" 
+          $outputZipFile = "flutter_windows_app.zip"          
+          Set-Location (Join-Path -Path $buildFolderPath -ChildPath "..\..")
+
+          Compress-Archive -Path "runner\Release\*" -DestinationPath $outputZipFile -Force 
+          $absoluteZipPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "build/windows/x64/$outputZipFile"
+
+          echo "zip_file=$absoluteZipPath" >> $GITHUB_OUTPUT
         shell: powershell
 
-      - name: Push to Releases
+      - name: Push to Releases (ncipollo/release-action)
         uses: ncipollo/release-action@v1
         with:
           artifacts: ${{ steps.zip_build.outputs.zip_file }}
