@@ -18,6 +18,8 @@ on:
 jobs:
   build_and_test_windows:
     runs-on: windows-latest
+    permissions:
+      contents: write
     outputs:
       zip_path: ${{ steps.zip_build.outputs.zip_file }}
 
